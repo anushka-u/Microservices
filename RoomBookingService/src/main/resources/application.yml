@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: RoomBookingService
+
+  datasource:
+    username: root
+    password: root@123
+    url: jdbc:mysql://localhost:3306/roomService
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8082
