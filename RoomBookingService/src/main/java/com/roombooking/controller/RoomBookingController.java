@@ -2,6 +2,10 @@ package com.roombooking.controller;
 
 import com.roombooking.entity.User;
 import com.roombooking.service.UserService;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,21 @@ public class RoomBookingController {
 
     @Autowired
     private UserService userService;
+    
+    @GetMapping("/getUser")
+    public ResponseEntity<List<User>> getUser()
+    {
+    	List<User> users = userService.getUser();
+		return ResponseEntity.ok(users) ;
+    	
+    }
+    
+    @GetMapping("/getUser/{userId}")
+    public ResponseEntity<User> getSingleUser(@PathVariable Long userId)
+    {
+    	User getExistingUser = userService.getSingleUser(userId);
+    	return ResponseEntity.ok(getExistingUser);
+    }
 
     // POST endpoint to create a user
     @PostMapping("/createUser")
@@ -19,5 +38,21 @@ public class RoomBookingController {
         // Save the user and return the saved user as response
         User savedUser = userService.saveUser(user);
         return ResponseEntity.ok(savedUser);
+    }
+    
+    
+    @PutMapping("/updateUser/{userId}")
+    public ResponseEntity<User> updateUserDetail(@PathVariable Long userId,@RequestBody User user)
+    {
+    	User saveUser= userService.updateUser(userId, user);
+		return ResponseEntity.ok(saveUser);
+    	
+    }
+    
+    @DeleteMapping("/deleteUser/{userId}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long userId)
+    {
+    	Optional<User> removedUser = userService.deleteUSerById(userId);
+    	return ResponseEntity.ok(removedUser.get());
     }
 }
