@@ -1,6 +1,8 @@
 package com.roombooking.controller;
 
+import com.roombooking.entity.Room;
 import com.roombooking.entity.User;
+import com.roombooking.service.RoomService;
 import com.roombooking.service.UserService;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class RoomBookingController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private RoomService roomService;
     
     @GetMapping("/getUser")
     public ResponseEntity<List<User>> getUser()
@@ -55,4 +60,34 @@ public class RoomBookingController {
     	Optional<User> removedUser = userService.deleteUSerById(userId);
     	return ResponseEntity.ok(removedUser.get());
     }
+    
+    
+    @GetMapping("/getRoomdetails")
+    public ResponseEntity<List<Room>> getAllRooms() {
+    	List<Room> room = roomService.getRoomDetails();
+    	return ResponseEntity.ok(room);
+    }
+    
+    @GetMapping("/getRoom/{roomType}")
+    public ResponseEntity<List<Room>> getRoomByType(@PathVariable("roomType") String roomType)
+    {
+    	List<Room> room = roomService.getAvailableRoomByRoomType(roomType);
+    	return ResponseEntity.ok(room);
+    }
+    
+    @GetMapping("/getAvailableRoom/{status}")
+    public ResponseEntity<List<Room>> getAllAvailableRooms(@PathVariable String status)
+    {
+    	List<Room> room = roomService.roomAvailable(status);
+    	return ResponseEntity.ok(room);
+    }
+    
+    @PostMapping("/addnewroom")
+    public ResponseEntity<Room> createRoom(@RequestBody Room room)
+    {
+    	Room createRoom = roomService.addRooms(room);
+    	return ResponseEntity.ok(createRoom);
+    }
+    
+    
 }
