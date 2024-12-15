@@ -1,5 +1,7 @@
 package com.roombooking.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,7 @@ public class BookingService {
         }
     }
 
-    public Booking doBooking(BookingDto bookingDTO) {
+    public String doBooking(BookingDto bookingDTO) {
         // Handle null checks before accessing User or Room fields
         if (bookingDTO.getUser() == null || bookingDTO.getRoom() == null) {
             throw new IllegalArgumentException("User and Room data must not be null");
@@ -51,6 +53,31 @@ public class BookingService {
         booking.setBookingStatus(bookingDTO.getBookingStatus());
 
         // Save and return the booking
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        
+        return "Booking Successfull";
+    }
+    
+    public List<Booking> getBookingDetails(){
+    	return bookingRepository.findAll();
+    }
+    
+    public Booking cancelBooking(Long bookingId)
+    {
+    	Booking booking = bookingRepository.findById(bookingId).orElseThrow(()-> new EntityNotFoundException("Booking doesn't exist"));
+    	bookingRepository.deleteById(bookingId);
+    	return booking; 
+    }
+    
+    
+    public Booking getBookingDetailByBookingId(Long BookingId)
+    {
+    	Booking booking = bookingRepository.findById(BookingId).orElseThrow(()-> new EntityNotFoundException("Booking doesn't exist"));
+    	return booking;
+    }
+    
+    public List<Booking> getBookingByUserId(Long userId)
+    {
+    	return bookingRepository.findByUser_UserId(userId);
     }
 }

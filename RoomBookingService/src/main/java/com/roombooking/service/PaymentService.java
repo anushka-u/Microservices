@@ -18,7 +18,7 @@ public class PaymentService {
 	@Autowired
 	private BookingRepository bookingRepository;
 	
-	public Payment doPayment(Payment payment)
+	public String doPayment(Payment payment)
 	{
 		if(payment.getBooking() == null)
 		{
@@ -33,6 +33,8 @@ public class PaymentService {
 		createPayment.setPaymentDate(payment.getPaymentDate());
 		createPayment.setPaymentStatus(payment.getPaymentStatus());
 		
-		return paymentRepository.save(createPayment);
+		paymentRepository.save(createPayment);
+		
+		return "Payment successfull";
 	}
 }
