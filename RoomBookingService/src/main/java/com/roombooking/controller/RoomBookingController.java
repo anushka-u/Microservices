@@ -1,16 +1,28 @@
 package com.roombooking.controller;
 
-import com.roombooking.entity.Room;
-import com.roombooking.entity.User;
-import com.roombooking.service.RoomService;
-import com.roombooking.service.UserService;
-
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.roombooking.dto.BookingDto;
+import com.roombooking.entity.Booking;
+import com.roombooking.entity.Payment;
+import com.roombooking.entity.Room;
+import com.roombooking.entity.User;
+import com.roombooking.service.BookingService;
+import com.roombooking.service.PaymentService;
+import com.roombooking.service.RoomService;
+import com.roombooking.service.UserService;
 
 @RestController
 @RequestMapping("/roombooking")
@@ -22,6 +34,11 @@ public class RoomBookingController {
     @Autowired
     private RoomService roomService;
     
+    @Autowired
+    private BookingService bookingService;
+    
+    @Autowired
+    private PaymentService paymentService;
     @GetMapping("/getUser")
     public ResponseEntity<List<User>> getUser()
     {
@@ -89,5 +106,30 @@ public class RoomBookingController {
     	return ResponseEntity.ok(createRoom);
     }
     
+    @PutMapping("/checkout/{roomNumber}")
+    public ResponseEntity<String> checkoutRoom(@PathVariable int roomNumber) {
+        // Call the service method to update the room status
+        roomService.checkoutRoom(roomNumber);
+        
+        // Return a success response
+        return ResponseEntity.ok("Room checked out successfully");
+    }
     
+    
+    
+    @PostMapping("/createBooking")
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto bookingDTO)
+    {
+    	Booking booking = bookingService.doBooking(bookingDTO);
+    	return ResponseEntity.ok(booking);
+    }
+    
+    @PostMapping("/makePayment")
+    public ResponseEntity<Payment> makePayment(@RequestBody Payment payment)
+    {
+    	Payment paymentt = paymentService.doPayment(payment);
+    	
+    	return ResponseEntity.ok(paymentt);
+    	
+    }
 }
