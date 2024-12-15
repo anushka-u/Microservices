@@ -115,21 +115,49 @@ public class RoomBookingController {
         return ResponseEntity.ok("Room checked out successfully");
     }
     
-    
+    //To add a booking
     
     @PostMapping("/createBooking")
-    public ResponseEntity<Booking> createBooking(@RequestBody BookingDto bookingDTO)
+    public ResponseEntity<String> createBooking(@RequestBody BookingDto bookingDTO)
     {
-    	Booking booking = bookingService.doBooking(bookingDTO);
-    	return ResponseEntity.ok(booking);
+    	//Booking booking = bookingService.doBooking(bookingDTO);
+    	return ResponseEntity.ok((String)bookingService.doBooking(bookingDTO));
     }
     
-    @PostMapping("/makePayment")
-    public ResponseEntity<Payment> makePayment(@RequestBody Payment payment)
+    @GetMapping("/getAllBookings")
+    //To get all booking details
+    public ResponseEntity<List<Booking>> getAllBooking()
     {
-    	Payment paymentt = paymentService.doPayment(payment);
+    	return ResponseEntity.ok(bookingService.getBookingDetails());
+    }
+    
+    
+    //To get booking detail using booking id
+    @GetMapping("/getBookingDetailByBookingId/{bookingId}")
+    public ResponseEntity<Booking> getBookingDetailByBookingId(@PathVariable Long bookingId)
+    {
+    	return ResponseEntity.ok(bookingService.getBookingDetailByBookingId(bookingId));
+    }
+    
+    //To get booking details using user Id
+    @GetMapping("/fetchBookingUSingUserId/{userId}")
+    public ResponseEntity<List<Booking>> getBookingUsingByUserId(@PathVariable Long userId)
+    {
+    	return ResponseEntity.ok(bookingService.getBookingByUserId(userId));
+    }
+    
+    //To cancel a booking
+    @DeleteMapping("/cancelbooking/{bookingId}")
+    public ResponseEntity<Booking> cancelBooking(@PathVariable Long bookingId)
+    {
+    	return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
+    }
+    @PostMapping("/makePayment")
+    public ResponseEntity<String> makePayment(@RequestBody Payment payment)
+    {
+//    	Payment paymentt = paymentService.doPayment(payment);
     	
-    	return ResponseEntity.ok(paymentt);
+    	return ResponseEntity.ok((String) paymentService.doPayment(payment));
     	
     }
 }
