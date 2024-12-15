@@ -1,18 +1,24 @@
 package com.roombooking.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.web.WebProperties;
-
-import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
 @Table(name="Booking")
-@Data
 @RequiredArgsConstructor
+@Data
 public class Booking {
 
     @Id
@@ -26,9 +32,9 @@ public class Booking {
     @JoinColumn(name="room_id", nullable=false)
     private Room room;
 
-    @Column(nullable = false)
+    
     private LocalDate startDate;
-    @Column(nullable = false)
+    
     private LocalDate endTime;
     @Column(nullable = false)
     private String bookingStatus;
